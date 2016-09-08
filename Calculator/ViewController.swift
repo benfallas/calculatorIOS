@@ -54,6 +54,13 @@ class ViewController: UIViewController
             
         case "√":
             performOperation {sqrt($0)}
+        case "sin":
+            performOperation {Darwin.sin($0)}
+        case "cos":
+            performOperation {Darwin.cos($0)}
+        case "π":
+            displayValue = M_PI
+            enter()
         default:
             break;
         }

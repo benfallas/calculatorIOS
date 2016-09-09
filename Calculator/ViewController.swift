@@ -24,14 +24,18 @@ class ViewController: UIViewController
     // Sender is the value of the button been pressed
     // This allows us to just have one function for all buttons
     @IBAction func appendDigit(sender: UIButton) {
-        let digit = sender.currentTitle!
         
-        if userIsInTheMiddleOfTyping {
-            resultDisplay.text = resultDisplay.text! + digit
-        } else {
-            resultDisplay.text = digit
-            userIsInTheMiddleOfTyping = true
+        let digit = sender.currentTitle!
+        if Double(resultDisplay.text! + digit) != nil {
+            if userIsInTheMiddleOfTyping {
+                resultDisplay.text = resultDisplay.text! + digit
+            } else {
+                resultDisplay.text = digit
+                userIsInTheMiddleOfTyping = true
+            }
         }
+        
+        
     }
     @IBAction func operate(sender: UIButton) {
         let operation = sender.currentTitle!
@@ -61,6 +65,8 @@ class ViewController: UIViewController
         case "π":
             displayValue = M_PI
             enter()
+        case "clear":
+            clear()
         default:
             break;
         }
@@ -84,6 +90,11 @@ class ViewController: UIViewController
     // Initializes an empty array
     var operandStack = Array<Double>()
     
+    @IBAction func clear() {
+        resultDisplay.text = "0"
+        operandStack = Array<Double>()
+    }
+    
     @IBAction func enter() {
         userIsInTheMiddleOfTyping = false
         
@@ -94,6 +105,9 @@ class ViewController: UIViewController
     
     var displayValue : Double {
         get {
+            if resultDisplay.text! == "." {
+                resultDisplay.text = "0"
+            }
             return NSNumberFormatter().numberFromString(resultDisplay.text!)!.doubleValue
         }
         set {

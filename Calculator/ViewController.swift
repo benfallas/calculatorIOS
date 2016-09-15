@@ -94,7 +94,7 @@ class ViewController: UIViewController
         resultDisplay.text = "0"
         operandStack = Array<Double>()
     }
-    
+
     @IBAction func enter() {
         userIsInTheMiddleOfTyping = false
         

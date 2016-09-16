@@ -20,6 +20,8 @@ class ViewController: UIViewController
     @IBOutlet weak var resultDisplay: UILabel!
     
     var userIsInTheMiddleOfTyping: Bool = false
+    
+    var brain = CalculatorBrain()
 
     // Sender is the value of the button been pressed
     // This allows us to just have one function for all buttons
@@ -34,73 +36,34 @@ class ViewController: UIViewController
                 userIsInTheMiddleOfTyping = true
             }
         }
-        
-        
     }
+    
     @IBAction func operate(sender: UIButton) {
-        let operation = sender.currentTitle!
-        
         if userIsInTheMiddleOfTyping {
             enter();
         }
         
-        switch operation {
-        case "x":
-            performOperation {$0 * $1}
-            
-        case "/":
-            performOperation {$0 / $1}
-        case "+":
-            performOperation {$0 + $1}
-        
-        case "-":
-            performOperation {$0 - $1}
-            
-        case "√":
-            performOperation {sqrt($0)}
-        case "sin":
-            performOperation {Darwin.sin($0)}
-        case "cos":
-            performOperation {Darwin.cos($0)}
-        case "π":
-            displayValue = M_PI
-            enter()
-        case "clear":
-            clear()
-        default:
-            break;
-        }
-        
-    }
-    
-    private func performOperation(operation: (Double, Double) -> Double) {
-        if operandStack.count >= 2 {
-            displayValue = operation(operandStack.removeLast(), operandStack.removeLast())
-            enter()
+        if let operation = sender.currentTitle {
+            if let result = brain.performOperation(operation) {
+                displayValue = result
+            } else {
+                displayValue = 0
+            }
         }
     }
-
-    private func performOperation(operation: Double -> Double) {
-        if operandStack.count >= 1 {
-            displayValue = operation(operandStack.removeLast())
-            enter()
-        }
-    }
-    
-    // Initializes an empty array
-    var operandStack = Array<Double>()
     
     @IBAction func clear() {
         resultDisplay.text = "0"
-        operandStack = Array<Double>()
     }
 
     @IBAction func enter() {
         userIsInTheMiddleOfTyping = false
         
-        operandStack.append(displayValue)
-        
-        print("operandStack = \(operandStack)")
+        if let result = brain.pushOperand(displayValue) {
+            displayValue = result
+        } else {
+            displayValue = 0
+        }
     }
     
     var displayValue : Double {

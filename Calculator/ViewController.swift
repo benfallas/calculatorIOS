@@ -58,9 +58,7 @@ class ViewController: UIViewController
 
     @IBAction func enter() {
         userIsInTheMiddleOfTyping = false
-        print("THIs is in enter: \(displayValue!)")
         if let result = brain.pushOperand(displayValue!) {
-            print("RESULT: \(result)")
             displayValue = result
         } else {
             displayValue = 0
@@ -76,8 +74,6 @@ class ViewController: UIViewController
             }
             
             if let number = NumberFormatter().number(from: resultDisplay!.text!) {
-                print("This number in displayValue: \(number), ")
-                    
                 return number.doubleValue
             } else {
                 return nil;

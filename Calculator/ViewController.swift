@@ -67,8 +67,6 @@ class ViewController: UIViewController
     
     var displayValue : Double? {
         get {
-            print(resultDisplay!.text!)
-            
             if resultDisplay.text! == "." {
                 resultDisplay.text = "0"
             }

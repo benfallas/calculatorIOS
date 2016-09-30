@@ -25,7 +25,7 @@ class ViewController: UIViewController
 
     // Sender is the value of the button been pressed
     // This allows us to just have one function for all buttons
-    @IBAction func appendDigit(sender: UIButton) {
+    @IBAction func appendDigit(_ sender: UIButton) {
         
         let digit = sender.currentTitle!
         if Double(resultDisplay.text! + digit) != nil {
@@ -38,7 +38,7 @@ class ViewController: UIViewController
         }
     }
     
-    @IBAction func operate(sender: UIButton) {
+    @IBAction func operate(_ sender: UIButton) {
         if userIsInTheMiddleOfTyping {
             enter();
         }
@@ -58,23 +58,33 @@ class ViewController: UIViewController
 
     @IBAction func enter() {
         userIsInTheMiddleOfTyping = false
-        
-        if let result = brain.pushOperand(displayValue) {
+        print("THIs is in enter: \(displayValue!)")
+        if let result = brain.pushOperand(displayValue!) {
+            print("RESULT: \(result)")
             displayValue = result
         } else {
             displayValue = 0
         }
     }
     
-    var displayValue : Double {
+    var displayValue : Double? {
         get {
+            print(resultDisplay!.text!)
+            
             if resultDisplay.text! == "." {
                 resultDisplay.text = "0"
             }
-            return NSNumberFormatter().numberFromString(resultDisplay.text!)!.doubleValue
+            
+            if let number = NumberFormatter().number(from: resultDisplay!.text!) {
+                print("This number in displayValue: \(number), ")
+                    
+                return number.doubleValue
+            } else {
+                return nil;
+            }
         }
         set {
-            resultDisplay.text = "\(newValue)"
+            resultDisplay.text = "\(newValue!)"
             userIsInTheMiddleOfTyping = false
         }
     }
